@@ -1,0 +1,21 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  icon: "phone" | "pin" | "clock";
+  title: string;
+  lines: string[];
+}
+
+const { icon, title, lines } = Astro.props;
+---
+
+<div class="rounded-2xl border border-pool-900/8 bg-white p-7 text-center shadow-sm shadow-pool-900/5">
+  <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-pool-500 text-white">
+    <Icon name={icon} class="h-6 w-6" />
+  </div>
+  <h3 class="mt-4 font-display text-lg text-pool-950">{title}</h3>
+  <div class="mt-2 space-y-0.5 text-sm text-ink/65">
+    {lines.map((line) => <p>{line}</p>)}
+  </div>
+</div>

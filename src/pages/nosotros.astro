@@ -1,0 +1,91 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const values = [
+  {
+    title: "Empresa integral",
+    description: "Fabricamos, colocamos y mantenemos: un solo equipo te acompaña en todo el proceso.",
+  },
+  {
+    title: "Materiales de primera",
+    description: "Combinamos las últimas técnicas en fibra de vidrio con materiales de alta calidad.",
+  },
+  {
+    title: "Garantía real",
+    description: "15 años de garantía en estructura y 3 años en equipamiento de piscinas.",
+  },
+];
+
+const timeline = [
+  { year: "2014", text: "Pooldior comienza a fabricar piscinas de fibra de vidrio en Uruguay." },
+  { year: "2017", text: "Se suma el área de colocación y servicio técnico propio." },
+  { year: "2020", text: "Ampliamos el catálogo de modelos y planes de mantenimiento anual." },
+  { year: "Hoy", text: "Más de 500 piscinas instaladas en Montevideo, Canelones, Maldonado y Rocha." },
+];
+---
+
+<Layout title="Nosotros" forceDarkHeader>
+  <section class="bg-sand-50 pb-16 pt-40">
+    <div class="container-page grid gap-12 md:grid-cols-2 md:items-center">
+      <div>
+        <p class="text-xs uppercase tracking-[0.2em] text-pool-600">Nosotros</p>
+        <h1 class="mt-4 font-display text-5xl text-pool-950">
+          La única empresa integral de piscinas en Uruguay
+        </h1>
+        <p class="mt-6 text-base leading-relaxed text-ink/70">
+          Somos una empresa dedicada a la fabricación, colocación y mantenimiento de piscinas
+          desde el año 2014. Trabajamos con las últimas técnicas en fibra de vidrio, materiales
+          de alta calidad y mano de obra calificada, para que logres el espacio de placer que
+          buscás y lo disfrutes todo el año.
+        </p>
+      </div>
+      <div class="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-pool-500 to-pool-950">
+        <div class="pattern-hex absolute inset-0 opacity-30"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-pool-900/10 bg-pool-950 py-20 text-white">
+    <div class="container-page">
+      <p class="text-xs uppercase tracking-[0.2em] text-pool-200">Por qué elegirnos</p>
+      <div class="mt-8 grid gap-10 md:grid-cols-3">
+        {
+          values.map((value) => (
+            <div>
+              <h3 class="font-display text-xl">{value.title}</h3>
+              <p class="mt-3 text-sm leading-relaxed text-pool-50/70">{value.description}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="container-page py-24">
+    <p class="text-xs uppercase tracking-[0.2em] text-pool-600">Trayectoria</p>
+    <div class="mt-10 divide-y divide-pool-900/10 border-t border-pool-900/10">
+      {
+        timeline.map((item) => (
+          <div class="grid gap-2 py-6 sm:grid-cols-[8rem_1fr] sm:items-baseline">
+            <span class="font-display text-2xl text-pool-950">{item.year}</span>
+            <p class="text-sm leading-relaxed text-ink/70">{item.text}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="bg-brass-500">
+    <div class="container-page flex flex-col items-start gap-6 py-20 md:flex-row md:items-center md:justify-between">
+      <h2 class="max-w-lg font-display text-3xl text-pool-950 md:text-4xl">
+        Conversemos sobre la piscina de tu próximo proyecto.
+      </h2>
+      <a
+        href="/contacto"
+        class="rounded-full bg-pool-950 px-8 py-3.5 text-sm uppercase tracking-[0.08em] text-white transition-colors hover:bg-pool-900"
+      >
+        Contactar al equipo
+      </a>
+    </div>
+  </section>
+</Layout>

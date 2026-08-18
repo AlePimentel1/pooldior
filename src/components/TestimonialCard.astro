@@ -1,0 +1,35 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  name: string;
+  role: string;
+  quote: string;
+  initials: string;
+  avatarColor: string;
+  rating?: number;
+}
+
+const { name, role, quote, initials, avatarColor, rating = 5 } = Astro.props;
+---
+
+<div class="flex h-full flex-col rounded-2xl border border-pool-900/8 bg-white p-7 shadow-sm shadow-pool-900/5">
+  <div class="flex items-center gap-3">
+    <div
+      class="flex h-11 w-11 flex-none items-center justify-center rounded-full text-sm font-semibold text-white"
+      style={`background-color:${avatarColor}`}
+    >
+      {initials}
+    </div>
+    <div>
+      <p class="text-sm font-semibold text-pool-950">{name}</p>
+      <p class="text-xs text-ink/50">{role}</p>
+    </div>
+  </div>
+
+  <div class="mt-4 flex gap-0.5 text-brass-500">
+    {Array.from({ length: rating }).map(() => <Icon name="star" class="h-4 w-4" />)}
+  </div>
+
+  <p class="mt-4 flex-1 text-sm leading-relaxed text-ink/70">&ldquo;{quote}&rdquo;</p>
+</div>

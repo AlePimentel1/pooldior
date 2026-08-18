@@ -1,0 +1,78 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ServiceIconCard from "../components/ServiceIconCard.astro";
+
+const services = [
+  {
+    id: "asesoramiento",
+    icon: "asesoramiento" as const,
+    title: "Asesoramiento",
+    description:
+      "Te acompañamos desde el primer contacto: elegimos juntos el modelo, la ubicación y el equipamiento que mejor se adapta a tu espacio y presupuesto.",
+  },
+  {
+    id: "fabricacion",
+    icon: "fabricacion" as const,
+    title: "Fabricación",
+    description:
+      "Fabricamos piscinas de fibra de vidrio con tecnología y materiales de primera línea, con mano de obra calificada en cada etapa del proceso.",
+  },
+  {
+    id: "colocacion",
+    icon: "colocacion" as const,
+    title: "Colocación",
+    description:
+      "Nuestro equipo técnico se encarga de todo el proceso de instalación en el terreno, en los plazos acordados y con la terminación cuidada.",
+  },
+  {
+    id: "mantenimiento",
+    icon: "mantenimiento" as const,
+    title: "Mantenimiento",
+    description:
+      "Planes de mantenimiento periódico —limpieza, control químico y puesta a punto— para que tu piscina esté lista todo el año.",
+  },
+  {
+    id: "servicio",
+    icon: "servicio" as const,
+    title: "Servicio",
+    description:
+      "Servicio técnico y equipamiento con garantía: filtros, bombas y climatización, siempre que los necesites.",
+  },
+];
+---
+
+<Layout title="Servicios" forceDarkHeader>
+  <section class="bg-sand-50 pb-16 pt-40">
+    <div class="container-page max-w-2xl">
+      <p class="text-xs uppercase tracking-[0.2em] text-pool-600">Servicios</p>
+      <h1 class="mt-4 font-display text-5xl text-pool-950">
+        Somos la única empresa integral de piscinas en Uruguay
+      </h1>
+      <p class="mt-6 text-base leading-relaxed text-ink/70">
+        Fabricación, colocación, mantenimiento y servicio técnico desde 2014, con garantía de
+        hasta 15 años en estructura y 3 años en equipamiento.
+      </p>
+    </div>
+  </section>
+
+  <section class="relative bg-sand-100 py-20">
+    <div class="pattern-hex absolute inset-0 opacity-40"></div>
+    <div class="container-page relative grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {services.map((service) => <ServiceIconCard {...service} />)}
+    </div>
+  </section>
+
+  <section class="bg-pool-950 py-20 text-white">
+    <div class="container-page flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
+      <h2 class="max-w-lg font-display text-3xl">
+        Contanos sobre tu proyecto y armamos una propuesta a medida.
+      </h2>
+      <a
+        href="/contacto"
+        class="rounded-full bg-brass-500 px-8 py-3.5 text-sm uppercase tracking-[0.08em] text-pool-950 transition-colors hover:bg-brass-400"
+      >
+        Solicitar cotización
+      </a>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+
+  --color-ink: #10282b;
+  --color-pool-950: #082f33;
+  --color-pool-900: #0b4247;
+  --color-pool-800: #0d565c;
+  --color-pool-700: #106d74;
+  --color-pool-600: #16888f;
+  --color-pool-500: #1fa6ac;
+  --color-pool-400: #4dc0c4;
+  --color-pool-200: #a9e4e2;
+  --color-pool-100: #cff3f1;
+  --color-pool-50: #eafbfa;
+
+  --color-sand-50: #f7fbfb;
+  --color-sand-100: #eef6f5;
+  --color-sand-200: #dcebea;
+
+  --color-brass-400: #ffb648;
+  --color-brass-500: #f59e0b;
+  --color-brass-600: #d97706;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-sand-50);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.container-page {
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .container-page {
+    padding-inline: 2.5rem;
+  }
+}
+
+.pattern-hex {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='96' viewBox='0 0 84 96'%3E%3Cpath d='M42 0l42 24v48L42 96 0 72V24z' fill='none' stroke='%231fa6ac' stroke-opacity='0.14' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-size: 84px 96px;
+}
+
+.glass-card {
+  background-color: rgb(255 255 255 / 0.12);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgb(255 255 255 / 0.25);
+}
