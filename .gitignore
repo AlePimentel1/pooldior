@@ -16,3 +16,6 @@ npm-debug.log*
 
 # macOS-specific files
 .DS_Store
+
+# impeccable tooling output
+.impeccable/
