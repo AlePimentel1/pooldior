@@ -1,132 +1,112 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import InfoCard from "../components/InfoCard.astro";
+import WhatsAppButton from "../components/WhatsAppButton.astro";
+import { contact, company, waMessages } from "../data/site";
+
+// Cada tema abre WhatsApp con su mensaje ya escrito: la persona solo aprieta
+// enviar, y del otro lado se sabe de entrada sobre qué es la consulta.
+const topics = [
+  {
+    title: "Quiero cotizar una piscina",
+    description: "Te pasamos precios de los modelos y coordinamos la visita al terreno.",
+    message: waMessages.cotizacion,
+  },
+  {
+    title: "Mantenimiento o servicio técnico",
+    description: "Para una piscina que ya está instalada, sea nuestra o no.",
+    message: waMessages.servicios,
+  },
+  {
+    title: "No sé qué modelo me entra",
+    description: "Vamos al terreno, lo evaluamos y te decimos cuál conviene.",
+    message: waMessages.visita,
+  },
+];
 
 const infoCards = [
   {
     icon: "phone" as const,
-    title: "Contacto",
-    lines: ["+598 99 000 000", "hola@pooldior.com.uy"],
-  },
-  {
-    icon: "pin" as const,
-    title: "Ubicación",
-    lines: ["Montevideo, Uruguay", "Zona metropolitana y balnearios"],
+    title: "Teléfono",
+    lines: [contact.phone],
+    href: contact.phoneHref,
   },
   {
     icon: "clock" as const,
     title: "Horario",
-    lines: ["Lu. a Vi. 09:00 – 18:00", "Sáb. 09:00 – 13:00"],
+    lines: contact.hours.map((h) => `${h.days} ${h.time}`),
+  },
+  {
+    icon: "pin" as const,
+    title: "Cobertura",
+    lines: [company.coverage],
   },
 ];
-
-const mapEmbedSrc =
-  "https://www.openstreetmap.org/export/embed.html?bbox=-56.2712%2C-34.9202%2C-56.1310%2C-34.8402&layer=mapnik&marker=-34.8802%2C-56.2011";
 ---
 
 <Layout title="Contacto" forceDarkHeader>
-  <section class="bg-sand-50 pb-16 pt-40">
-    <div class="container-page max-w-2xl text-center">
-      <p class="text-xs uppercase tracking-[0.2em] text-pool-600">Contacto</p>
-      <h1 class="mt-4 font-display text-5xl text-pool-950">Empecemos a conversar</h1>
-      <p class="mx-auto mt-6 max-w-md text-base leading-relaxed text-ink/70">
-        Contanos sobre tu proyecto —fabricación, colocación o mantenimiento— y te respondemos con
-        una propuesta a medida.
+  <section class="bg-sand-50 pb-14 pt-36 md:pt-40">
+    <div class="container-page max-w-2xl">
+      <h1 class="font-display text-4xl text-ink md:text-5xl">Contanos dónde va la piscina</h1>
+      <p class="mt-6 max-w-[68ch] leading-relaxed text-ink/70">
+        Atendemos por WhatsApp. Elegí sobre qué querés consultar y se abre el chat con el mensaje ya
+        escrito — solo agregás tu localidad y lo mandás.
       </p>
     </div>
 
-    <div class="container-page mt-14 grid gap-6 sm:grid-cols-3">
+    <div class="container-page mt-10 grid gap-4 sm:grid-cols-3">
       {infoCards.map((card) => <InfoCard {...card} />)}
     </div>
   </section>
 
-  <section class="container-page pb-24">
-    <div class="grid gap-16 lg:grid-cols-[1fr_1.2fr] lg:items-start">
-      <div class="rounded-2xl bg-gradient-to-br from-pool-500 to-pool-950 p-8 text-white sm:p-10">
-        <h2 class="font-display text-2xl">¿Preferís que te llamemos?</h2>
-        <p class="mt-3 text-sm leading-relaxed text-white/80">
-          Dejanos tus datos y un asesor de Pooldior se comunica con vos para avanzar con tu
-          consulta.
+  <section class="container-page pb-20">
+    <div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-14">
+      <div class="rounded-card bg-navy-900 p-8 text-white sm:p-9">
+        <h2 class="font-display text-xl">Escribinos al {contact.whatsapp}</h2>
+        <p class="mt-3 text-sm leading-relaxed text-white/75">
+          Es la vía más rápida y la que más usamos. Te respondemos dentro del horario de atención.
         </p>
+        <WhatsAppButton
+          message={waMessages.general}
+          label="Abrir WhatsApp"
+          class="mt-6 w-full sm:w-auto"
+        />
+
+        <hr class="my-7 border-white/15" />
+
+        <h3 class="text-sm font-semibold text-white/60">También podés llamarnos</h3>
         <a
-          href="https://wa.me/59899000000"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="mt-6 inline-flex rounded-full bg-white px-6 py-3 text-sm uppercase tracking-[0.08em] text-pool-900 transition-colors hover:bg-pool-50"
+          href={contact.phoneHref}
+          class="tnum mt-2 block font-display text-2xl text-pool-400 transition-colors hover:text-pool-300"
         >
-          Escribinos por WhatsApp
+          {contact.phone}
         </a>
+        <ul class="mt-4 space-y-1 text-sm text-white/60">
+          {contact.hours.map((h) => <li class="tnum">{h.days} {h.time}</li>)}
+        </ul>
       </div>
 
-      <form class="rounded-2xl border border-pool-900/10 bg-white p-8 sm:p-10">
-        <div class="grid gap-6 sm:grid-cols-2">
-          <label class="block">
-            <span class="text-xs uppercase tracking-[0.08em] text-ink/60">Nombre</span>
-            <input
-              type="text"
-              name="nombre"
-              required
-              class="mt-2 w-full border-b border-pool-900/20 bg-transparent py-2 text-sm text-ink outline-none focus:border-pool-600"
-            />
-          </label>
-          <label class="block">
-            <span class="text-xs uppercase tracking-[0.08em] text-ink/60">Teléfono</span>
-            <input
-              type="tel"
-              name="telefono"
-              class="mt-2 w-full border-b border-pool-900/20 bg-transparent py-2 text-sm text-ink outline-none focus:border-pool-600"
-            />
-          </label>
-          <label class="block sm:col-span-2">
-            <span class="text-xs uppercase tracking-[0.08em] text-ink/60">Email</span>
-            <input
-              type="email"
-              name="email"
-              required
-              class="mt-2 w-full border-b border-pool-900/20 bg-transparent py-2 text-sm text-ink outline-none focus:border-pool-600"
-            />
-          </label>
-          <label class="block sm:col-span-2">
-            <span class="text-xs uppercase tracking-[0.08em] text-ink/60">
-              ¿Qué estás buscando?
-            </span>
-            <select
-              name="interes"
-              class="mt-2 w-full border-b border-pool-900/20 bg-transparent py-2 text-sm text-ink outline-none focus:border-pool-600"
-            >
-              <option>Fabricación e instalación</option>
-              <option>Mantenimiento técnico</option>
-              <option>Equipamiento / repuestos</option>
-              <option>Otro</option>
-            </select>
-          </label>
-          <label class="block sm:col-span-2">
-            <span class="text-xs uppercase tracking-[0.08em] text-ink/60">Contanos sobre tu proyecto</span>
-            <textarea
-              name="mensaje"
-              rows="4"
-              required
-              class="mt-2 w-full border-b border-pool-900/20 bg-transparent py-2 text-sm text-ink outline-none focus:border-pool-600"
-            ></textarea>
-          </label>
-        </div>
-
-        <button
-          type="submit"
-          class="mt-8 w-full rounded-full bg-pool-500 px-8 py-3.5 text-sm uppercase tracking-[0.08em] text-white transition-colors hover:bg-pool-600 sm:w-auto"
-        >
-          Enviar consulta
-        </button>
-      </form>
+      <div>
+        <h2 class="font-display text-2xl text-ink">¿Sobre qué querés consultar?</h2>
+        <ul class="mt-6 grid gap-4">
+          {
+            topics.map((topic) => (
+              <li class="rounded-card border border-pool-200 bg-white p-6 transition-colors hover:border-pool-500">
+                <h3 class="font-display text-lg text-ink">{topic.title}</h3>
+                <p class="mt-2 max-w-[60ch] text-sm leading-relaxed text-ink/70">
+                  {topic.description}
+                </p>
+                <WhatsAppButton
+                  message={topic.message}
+                  label="Consultar por WhatsApp"
+                  variant="inline"
+                  class="mt-4"
+                />
+              </li>
+            ))
+          }
+        </ul>
+      </div>
     </div>
-  </section>
-
-  <section class="border-t border-pool-900/10">
-    <iframe
-      title="Ubicación de Pooldior"
-      class="h-[420px] w-full grayscale-0"
-      src={mapEmbedSrc}
-      loading="lazy"
-    ></iframe>
   </section>
 </Layout>

@@ -1,42 +1,41 @@
 ---
+import { navItems, waLink, waMessages } from "../data/site";
+
 interface Props {
   forceDark?: boolean;
 }
 
 const { forceDark = false } = Astro.props;
-
-const navItems = [
-  { label: "Nosotros", href: "/nosotros" },
-  { label: "Servicios", href: "/servicios" },
-  { label: "Modelos", href: "/modelos" },
-  { label: "Contacto", href: "/contacto" },
-];
-
 const currentPath = Astro.url.pathname;
 ---
 
 <header
   id="site-header"
-  class:list={["fixed inset-x-0 top-0 z-50 transition-colors duration-300", forceDark ? "text-ink" : "text-sand-50"]}
-  data-solid="false"
+  class:list={[
+    "fixed inset-x-0 top-0 z-50 transition-colors duration-200",
+    forceDark ? "text-ink" : "text-white",
+  ]}
   data-force-dark={String(forceDark)}
 >
-  <div class="container-page flex h-20 items-center justify-between">
-    <a href="/" class="flex items-baseline gap-2">
-      <span class="font-display text-2xl tracking-[0.15em] text-current">POOLDIOR</span>
+  <div class="container-page flex h-18 items-center justify-between gap-6">
+    <a href="/" class="flex items-center gap-2.5" aria-label="PoolDior, inicio">
+      <span class="h-6 w-6 flex-none rounded-full rounded-bl-sm bg-pool-500"></span>
+      <span class="font-display text-xl">Pool<span class="text-pool-500">Dior</span></span>
     </a>
 
-    <nav class="hidden items-center gap-10 md:flex">
+    <nav class="hidden items-center gap-8 md:flex">
       {
         navItems.map((item) => {
-          const isActive =
-            item.href === "/" ? currentPath === "/" : currentPath.startsWith(item.href);
+          const isActive = currentPath.startsWith(item.href);
           return (
             <a
               href={item.href}
+              aria-current={isActive ? "page" : undefined}
               class:list={[
-                "text-sm uppercase tracking-[0.08em] transition-opacity hover:opacity-70",
-                isActive ? "opacity-100 font-semibold" : "opacity-80",
+                "border-b-2 py-1 text-sm transition-colors",
+                isActive
+                  ? "border-pool-500 font-semibold"
+                  : "border-transparent opacity-80 hover:border-pool-500 hover:opacity-100",
               ]}
             >
               {item.label}
@@ -47,8 +46,10 @@ const currentPath = Astro.url.pathname;
     </nav>
 
     <a
-      href="/contacto"
-      class="hidden rounded-full bg-pool-500 px-6 py-2.5 text-sm uppercase tracking-[0.08em] text-white shadow-sm shadow-pool-900/20 transition-colors hover:bg-pool-600 md:inline-block"
+      href={waLink(waMessages.cotizacion)}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="hidden min-h-11 items-center rounded-md bg-pool-700 px-5 text-sm font-semibold text-white transition-colors hover:bg-pool-800 md:inline-flex"
     >
       Solicitar cotización
     </a>
@@ -58,36 +59,36 @@ const currentPath = Astro.url.pathname;
       type="button"
       aria-label="Abrir menú"
       aria-expanded="false"
+      aria-controls="mobile-menu"
       class="flex h-10 w-10 items-center justify-center md:hidden"
     >
-      <svg id="icon-open" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
+      <svg id="icon-open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+        <path stroke-linecap="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5"></path>
       </svg>
-      <svg id="icon-close" xmlns="http://www.w3.org/2000/svg" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      <svg id="icon-close" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+        <path stroke-linecap="round" d="M6 18L18 6M6 6l12 12"></path>
       </svg>
     </button>
   </div>
 
   <div
     id="mobile-menu"
-    class="hidden flex-col gap-1 border-t border-pool-800/10 bg-sand-50 px-6 py-6 text-ink md:hidden"
+    class="hidden flex-col border-t border-pool-200 bg-white px-6 py-4 text-ink md:hidden"
   >
     {
       navItems.map((item) => (
-        <a
-          href={item.href}
-          class="py-3 text-base uppercase tracking-[0.08em] border-b border-pool-900/5 last:border-none"
-        >
+        <a href={item.href} class="flex min-h-11 items-center border-b border-pool-100 py-3.5 text-base last:border-none">
           {item.label}
         </a>
       ))
     }
     <a
-      href="/contacto"
-      class="mt-4 rounded-full bg-pool-500 px-6 py-3 text-center text-sm uppercase tracking-[0.08em] text-white"
+      href={waLink(waMessages.general)}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="mt-4 flex min-h-11 items-center justify-center rounded-md bg-pool-700 px-6 text-sm font-semibold text-white"
     >
-      Solicitar cotización
+      Escribinos por WhatsApp
     </a>
   </div>
 </header>
@@ -99,15 +100,20 @@ const currentPath = Astro.url.pathname;
   const iconOpen = document.getElementById("icon-open");
   const iconClose = document.getElementById("icon-close");
 
+  const forceDark = header?.dataset.forceDark === "true";
+
   const applyHeaderStyle = () => {
     if (!header) return;
+    // Con el menú móvil abierto el fondo ya es sólido: no lo pisamos.
+    if (mobileMenu?.classList.contains("flex")) return;
+
     const solid = window.scrollY > 40;
-    header.dataset.solid = String(solid);
-    header.classList.toggle("bg-sand-50/95", solid);
+    header.classList.toggle("bg-white/95", solid);
     header.classList.toggle("backdrop-blur", solid);
-    header.classList.toggle("shadow-sm", solid);
-    header.classList.toggle("text-ink", solid || header.dataset.forceDark === "true");
-    header.classList.toggle("text-sand-50", !solid && header.dataset.forceDark !== "true");
+    header.classList.toggle("border-b", solid);
+    header.classList.toggle("border-pool-200", solid);
+    header.classList.toggle("text-ink", solid || forceDark);
+    header.classList.toggle("text-white", !solid && !forceDark);
   };
 
   applyHeaderStyle();
@@ -120,11 +126,12 @@ const currentPath = Astro.url.pathname;
     iconOpen?.classList.toggle("hidden", !isOpen);
     iconClose?.classList.toggle("hidden", isOpen);
     menuToggle.setAttribute("aria-expanded", String(!isOpen));
+
     if (!isOpen) {
-      header?.classList.add("bg-sand-50", "text-ink");
-      header?.classList.remove("text-sand-50");
+      header?.classList.add("bg-white", "text-ink");
+      header?.classList.remove("text-white");
     } else {
-      header?.classList.remove("bg-sand-50");
+      header?.classList.remove("bg-white");
       applyHeaderStyle();
     }
   });

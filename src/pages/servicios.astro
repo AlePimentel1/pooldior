@@ -1,78 +1,86 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import ServiceIconCard from "../components/ServiceIconCard.astro";
+import WhatsAppButton from "../components/WhatsAppButton.astro";
+import { services, warranty, company, contact, equipment, waMessages, waServiceMessage } from "../data/site";
 
-const services = [
-  {
-    id: "asesoramiento",
-    icon: "asesoramiento" as const,
-    title: "Asesoramiento",
-    description:
-      "Te acompañamos desde el primer contacto: elegimos juntos el modelo, la ubicación y el equipamiento que mejor se adapta a tu espacio y presupuesto.",
-  },
-  {
-    id: "fabricacion",
-    icon: "fabricacion" as const,
-    title: "Fabricación",
-    description:
-      "Fabricamos piscinas de fibra de vidrio con tecnología y materiales de primera línea, con mano de obra calificada en cada etapa del proceso.",
-  },
-  {
-    id: "colocacion",
-    icon: "colocacion" as const,
-    title: "Colocación",
-    description:
-      "Nuestro equipo técnico se encarga de todo el proceso de instalación en el terreno, en los plazos acordados y con la terminación cuidada.",
-  },
-  {
-    id: "mantenimiento",
-    icon: "mantenimiento" as const,
-    title: "Mantenimiento",
-    description:
-      "Planes de mantenimiento periódico —limpieza, control químico y puesta a punto— para que tu piscina esté lista todo el año.",
-  },
-  {
-    id: "servicio",
-    icon: "servicio" as const,
-    title: "Servicio",
-    description:
-      "Servicio técnico y equipamiento con garantía: filtros, bombas y climatización, siempre que los necesites.",
-  },
-];
+const iconNames = ["asesoramiento", "fabricacion"] as const;
 ---
 
 <Layout title="Servicios" forceDarkHeader>
-  <section class="bg-sand-50 pb-16 pt-40">
-    <div class="container-page max-w-2xl">
-      <p class="text-xs uppercase tracking-[0.2em] text-pool-600">Servicios</p>
-      <h1 class="mt-4 font-display text-5xl text-pool-950">
+  <section class="bg-sand-50 pb-14 pt-36 md:pt-40">
+    <div class="container-page max-w-3xl">
+      <h1 class="font-display text-4xl text-ink md:text-5xl">
         Somos la única empresa integral de piscinas en Uruguay
       </h1>
-      <p class="mt-6 text-base leading-relaxed text-ink/70">
-        Fabricación, colocación, mantenimiento y servicio técnico desde 2014, con garantía de
-        hasta 15 años en estructura y 3 años en equipamiento.
+      <p class="mt-6 max-w-[68ch] leading-relaxed text-ink/70">
+        Fabricación, colocación, mantenimiento y servicio técnico desde {company.since}, con{" "}
+        {warranty.structureYears} años de garantía en la estructura y {warranty.equipmentYears} en el
+        equipamiento.
       </p>
     </div>
   </section>
 
-  <section class="relative bg-sand-100 py-20">
-    <div class="pattern-hex absolute inset-0 opacity-40"></div>
-    <div class="container-page relative grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {services.map((service) => <ServiceIconCard {...service} />)}
+  <section class="bg-sand-100 py-16 md:py-20">
+    <div class="container-page">
+      <h2 class="font-display text-2xl text-ink md:text-3xl">Las cinco etapas, en orden</h2>
+      <div class="mt-8 grid gap-x-10 gap-y-8 md:grid-cols-2 lg:grid-cols-3">
+        {
+          services.map((service, i) => (
+            <ServiceIconCard
+              id={service.id}
+              index={i}
+              title={service.title}
+              description={service.description}
+              iconSrc={service.iconSrc}
+              iconName={service.iconSrc === null ? iconNames[i] : undefined}
+              message={waServiceMessage(service)}
+            />
+          ))
+        }
+      </div>
     </div>
   </section>
 
-  <section class="bg-pool-950 py-20 text-white">
-    <div class="container-page flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
-      <h2 class="max-w-lg font-display text-3xl">
-        Contanos sobre tu proyecto y armamos una propuesta a medida.
+  <section class="bg-sand-50 py-16 md:py-20">
+    <div class="container-page grid gap-10 md:grid-cols-2 md:gap-14">
+      <div>
+        <h2 class="font-display text-2xl text-ink md:text-3xl">
+          Lo que se le puede sumar a tu piscina
+        </h2>
+        <p class="mt-5 max-w-[68ch] leading-relaxed text-ink/70">
+          Además de la estructura, trabajamos el equipamiento y la terminación del entorno. El
+          climatizador es lo que hace que “todo el año” sea literal y no una forma de hablar.
+        </p>
+      </div>
+      <ul class="grid gap-3 sm:grid-cols-2">
+        {
+          equipment.map((item) => (
+            <li class="rounded-card border border-pool-200 bg-white px-4 py-3.5 text-sm font-medium text-ink">
+              {item}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="bg-navy-900 py-16 text-white">
+    <div
+      class="container-page flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between"
+    >
+      <h2 class="max-w-xl font-display text-2xl md:text-3xl">
+        Contanos sobre tu proyecto y armamos una propuesta.
       </h2>
-      <a
-        href="/contacto"
-        class="rounded-full bg-brass-500 px-8 py-3.5 text-sm uppercase tracking-[0.08em] text-pool-950 transition-colors hover:bg-brass-400"
-      >
-        Solicitar cotización
-      </a>
+      <div class="flex flex-wrap gap-3">
+        <WhatsAppButton message={waMessages.servicios} label="Consultar por WhatsApp" />
+        <a
+          href={contact.phoneHref}
+          class="tnum rounded-md border border-white/45 px-7 py-3.5 text-sm font-semibold text-white transition-colors hover:border-white hover:bg-white/10"
+        >
+          {contact.phone}
+        </a>
+      </div>
     </div>
   </section>
 </Layout>
