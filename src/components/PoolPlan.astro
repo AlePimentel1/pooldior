@@ -1,0 +1,72 @@
+---
+import type { PoolModel } from "../data/site";
+import { num } from "../data/site";
+
+interface Props {
+  model: PoolModel;
+  class?: string;
+}
+
+const { model, class: className } = Astro.props;
+
+/**
+ * Todos los modelos se dibujan en el MISMO viewBox y con la MISMA escala
+ * (100 unidades = 1 metro), así que las piscinas quedan comparables entre sí
+ * de un vistazo. Ese es el punto: quien duda entre la 6x3 y la 7x3 ve la
+ * diferencia, no la lee.
+ */
+const UNITS_PER_M = 100;
+const VB_W = 860;
+const VB_H = 540;
+const CENTER_X = VB_W / 2;
+const CENTER_Y = 230;
+
+const w = model.length * UNITS_PER_M;
+const h = model.width * UNITS_PER_M;
+
+const x = CENTER_X - w / 2;
+const y = CENTER_Y - h / 2;
+
+/** Borde interior: la línea de flotación, a 22 cm del borde. */
+const INSET = 22;
+
+const dimY = 470;
+const label = `${num(model.length)} m`;
+const alt = `Plano en planta de piscina ${model.shape} de ${num(model.length)} por ${num(model.width)} metros`;
+---
+
+<svg viewBox={`0 0 ${VB_W} ${VB_H}`} role="img" aria-label={alt} class={className}>
+  <line class="plan-center" x1="20" y1={CENTER_Y} x2={VB_W - 20} y2={CENTER_Y}></line>
+
+  {
+    model.shape === "ovalada" ? (
+      <>
+        <ellipse class="plan-shape" cx={CENTER_X} cy={CENTER_Y} rx={w / 2} ry={h / 2} />
+        <ellipse
+          class="plan-inner"
+          cx={CENTER_X}
+          cy={CENTER_Y}
+          rx={w / 2 - INSET}
+          ry={h / 2 - INSET}
+        />
+      </>
+    ) : (
+      <>
+        <rect class="plan-shape" x={x} y={y} width={w} height={h} rx="34" />
+        <rect
+          class="plan-inner"
+          x={x + INSET}
+          y={y + INSET}
+          width={w - INSET * 2}
+          height={h - INSET * 2}
+          rx="20"
+        />
+      </>
+    )
+  }
+
+  <line class="plan-dim" x1={x} y1={dimY} x2={x + w} y2={dimY}></line>
+  <line class="plan-dim" x1={x} y1={dimY - 15} x2={x} y2={dimY + 15}></line>
+  <line class="plan-dim" x1={x + w} y1={dimY - 15} x2={x + w} y2={dimY + 15}></line>
+  <text class="plan-label" x={CENTER_X} y={dimY + 52} text-anchor="middle">{label}</text>
+</svg>
