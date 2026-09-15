@@ -1,0 +1,42 @@
+---
+import Icon from "./Icon.astro";
+import { waLink } from "../data/site";
+
+interface Props {
+  /** Texto del mensaje ya escrito que verá la persona al abrir WhatsApp. */
+  message: string;
+  /** Etiqueta visible del botón. */
+  label?: string;
+  variant?: "primary" | "outline-light" | "outline-dark" | "inline";
+  class?: string;
+}
+
+const {
+  message,
+  label = "Escribinos por WhatsApp",
+  variant = "primary",
+  class: className = "",
+} = Astro.props;
+
+// Todos comparten alto táctil mínimo (44px) y alineación del ícono; lo único
+// que cambia entre variantes es el color, porque el fondo cambia de sección.
+const base =
+  "inline-flex min-h-11 items-center justify-center gap-2 text-sm font-semibold transition-colors";
+
+const variants = {
+  primary: "rounded-md bg-pool-700 px-7 py-3.5 text-white hover:bg-pool-800",
+  "outline-light": "rounded-md border border-white/45 px-7 py-3.5 text-white hover:border-white hover:bg-white/10",
+  "outline-dark": "rounded-md border border-pool-300 px-7 py-3.5 text-pool-700 hover:border-pool-500 hover:bg-white",
+  inline: "text-pool-700 underline underline-offset-4 hover:text-pool-800",
+} as const;
+---
+
+<a
+  href={waLink(message)}
+  target="_blank"
+  rel="noopener noreferrer"
+  class:list={[base, variants[variant], className]}
+>
+  <Icon name="whatsapp" class={variant === "inline" ? "h-4 w-4 flex-none" : "h-5 w-5 flex-none"} />
+  {label}
+</a>
