@@ -1,42 +1,69 @@
 @import "tailwindcss";
 
+/* ==========================================================================
+   Tokens de marca.
+   Extraídos del sitio en producción (variables globales de Astra):
+   #3AA6B9 #2997AA #0F172A #454F5E #E9F8F9 #CAE6E8 #FFFFFF
+   Tipografías reales del sitio: Montserrat (títulos) + Work Sans (cuerpo).
+   ========================================================================== */
+
 @theme {
-  --font-display: "Fraunces", ui-serif, Georgia, serif;
-  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Work Sans", ui-sans-serif, system-ui, sans-serif;
 
-  --color-ink: #10282b;
-  --color-pool-950: #082f33;
-  --color-pool-900: #0b4247;
-  --color-pool-800: #0d565c;
-  --color-pool-700: #106d74;
-  --color-pool-600: #16888f;
-  --color-pool-500: #1fa6ac;
-  --color-pool-400: #4dc0c4;
-  --color-pool-200: #a9e4e2;
-  --color-pool-100: #cff3f1;
-  --color-pool-50: #eafbfa;
+  /* Tinta y superficies oscuras */
+  --color-ink: #0f172a;
+  --color-navy-900: #0f172a;
+  --color-navy-800: #17233a;
+  --color-navy-700: #22314c;
 
-  --color-sand-50: #f7fbfb;
-  --color-sand-100: #eef6f5;
-  --color-sand-200: #dcebea;
+  /* Turquesa de marca */
+  --color-pool-950: #0a3d46;
+  --color-pool-900: #0f5561;
+  --color-pool-800: #17707f;
+  --color-pool-700: #1d7788;
+  --color-pool-600: #2997aa;
+  --color-pool-500: #3aa6b9;
+  --color-pool-400: #6bc0ce;
+  --color-pool-300: #9fd8e1;
+  --color-pool-200: #cae6e8;
+  --color-pool-100: #e9f8f9;
+  --color-pool-50: #f4fbfc;
 
-  --color-brass-400: #ffb648;
-  --color-brass-500: #f59e0b;
-  --color-brass-600: #d97706;
+  /* Fondos claros */
+  --color-sand-50: #ffffff;
+  --color-sand-100: #f2f8f9;
+  --color-sand-200: #e4f1f3;
+
+  /* Estrellas de las reseñas de Google. Único color fuera de la marca,
+     y solo porque es el color canónico de una calificación. */
+  --color-star: #f5a623;
+
+  --radius-card: 0.5rem;
 }
 
 html {
   scroll-behavior: smooth;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 body {
   background-color: var(--color-sand-50);
   color: var(--color-ink);
   font-family: var(--font-sans);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
 }
 
 .font-display {
   font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.025em;
 }
 
 .container-page {
@@ -52,14 +79,99 @@ body {
   }
 }
 
-.pattern-hex {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='96' viewBox='0 0 84 96'%3E%3Cpath d='M42 0l42 24v48L42 96 0 72V24z' fill='none' stroke='%231fa6ac' stroke-opacity='0.14' stroke-width='1.5'/%3E%3C/svg%3E");
-  background-size: 84px 96px;
+/* Etiqueta de sección. Una sola escala de tracking en todo el sitio,
+   no cinco valores arbitrarios distintos. */
+.eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
-.glass-card {
-  background-color: rgb(255 255 255 / 0.12);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgb(255 255 255 / 0.25);
+/* Cifras en columna: alineadas ópticamente. */
+.tnum {
+  font-variant-numeric: tabular-nums;
 }
+
+/* --------------------------------------------------------------------------
+   Planos de piscina.
+   Todos los modelos se dibujan en el mismo viewBox, así que quedan a escala
+   relativa real entre sí: la 8x4 se ve más grande que la 4,6x2,1 porque lo es.
+   -------------------------------------------------------------------------- */
+.plan-shape {
+  fill: color-mix(in srgb, var(--color-pool-500) 24%, transparent);
+  stroke: var(--color-pool-600);
+  stroke-width: 5;
+}
+
+.plan-inner {
+  fill: none;
+  stroke: var(--color-pool-600);
+  stroke-width: 2;
+  opacity: 0.45;
+}
+
+.plan-center {
+  stroke: var(--color-pool-700);
+  stroke-width: 1.5;
+  stroke-dasharray: 26 9 5 9;
+  opacity: 0.35;
+}
+
+.plan-dim {
+  stroke: var(--color-pool-700);
+  stroke-width: 2;
+  opacity: 0.75;
+}
+
+.plan-label {
+  fill: var(--color-pool-700);
+  font-family: var(--font-sans);
+  font-size: 30px;
+  font-weight: 500;
+}
+
+/* Íconos PNG del sitio original: vienen en negro sólido.
+   Se recolorean por máscara para que tomen el color de marca. */
+.icon-mask {
+  background-color: currentColor;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+/* --------------------------------------------------------------------------
+   Superficies que pinta el browser.
+   Selección, caret, foco y scrollbar vienen con defaults que no pertenecen a
+   ningún sistema de diseño. Se visten con la paleta como todo lo demás.
+   -------------------------------------------------------------------------- */
+::selection {
+  background-color: var(--color-pool-200);
+  color: var(--color-navy-900);
+}
+
+:root {
+  caret-color: var(--color-pool-700);
+  accent-color: var(--color-pool-700);
+  scrollbar-color: var(--color-pool-300) var(--color-sand-100);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-pool-700);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Sobre navy el foco turquesa oscuro no se ve: se aclara. */
+.bg-navy-900 :focus-visible,
+.bg-navy-800 :focus-visible {
+  outline-color: var(--color-pool-300);
+}
+
+a {
+  text-underline-offset: 0.2em;
+}
+

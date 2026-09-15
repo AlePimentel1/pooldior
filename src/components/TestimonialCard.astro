@@ -1,35 +1,47 @@
 ---
 import Icon from "./Icon.astro";
+import type { Review } from "../data/site";
 
 interface Props {
-  name: string;
-  role: string;
-  quote: string;
-  initials: string;
-  avatarColor: string;
-  rating?: number;
+  review: Review;
+  /** La primera reseña se muestra destacada, como cita editorial. */
+  featured?: boolean;
 }
 
-const { name, role, quote, initials, avatarColor, rating = 5 } = Astro.props;
+const { review, featured = false } = Astro.props;
 ---
 
-<div class="flex h-full flex-col rounded-2xl border border-pool-900/8 bg-white p-7 shadow-sm shadow-pool-900/5">
-  <div class="flex items-center gap-3">
-    <div
-      class="flex h-11 w-11 flex-none items-center justify-center rounded-full text-sm font-semibold text-white"
-      style={`background-color:${avatarColor}`}
+<figure
+  class:list={[
+    "flex h-full flex-col rounded-card border border-pool-200 bg-white p-6",
+    featured && "sm:col-span-2",
+  ]}
+>
+  <div class="flex gap-0.5 text-star" aria-label={`${review.rating} de 5 estrellas`}>
+    {Array.from({ length: review.rating }).map(() => <Icon name="star" class="h-4 w-4" />)}
+  </div>
+
+  <blockquote
+    class:list={[
+      "mt-4 flex-1 leading-relaxed text-ink/75",
+      featured ? "font-display text-lg leading-snug text-ink sm:text-xl" : "text-sm",
+    ]}
+  >
+    &ldquo;{review.quote}&rdquo;
+  </blockquote>
+
+  <figcaption class="mt-5 flex items-center gap-3 border-t border-pool-100 pt-4">
+    <span
+      class="flex h-9 w-9 flex-none items-center justify-center rounded-full bg-pool-700 text-xs font-semibold text-white"
+      aria-hidden="true"
     >
-      {initials}
-    </div>
-    <div>
-      <p class="text-sm font-semibold text-pool-950">{name}</p>
-      <p class="text-xs text-ink/50">{role}</p>
-    </div>
-  </div>
-
-  <div class="mt-4 flex gap-0.5 text-brass-500">
-    {Array.from({ length: rating }).map(() => <Icon name="star" class="h-4 w-4" />)}
-  </div>
-
-  <p class="mt-4 flex-1 text-sm leading-relaxed text-ink/70">&ldquo;{quote}&rdquo;</p>
-</div>
+      {review.initials}
+    </span>
+    <span>
+      <span class="block text-sm font-semibold text-ink">{review.name}</span>
+      <time datetime={review.isoDate} class="block text-xs text-ink/50">
+        {review.date} · Google
+      </time>
+    </span>
+  </figcaption>
+</figure>
